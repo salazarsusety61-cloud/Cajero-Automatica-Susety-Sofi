@@ -3,7 +3,7 @@ import os
 
 ARCHIVO = "cuentas.json"
 
-# ---------- PERSONA A ----------
+# pqrte 1
 def cargar_cuentas():
     if not os.path.exists(ARCHIVO):
         return []
@@ -16,14 +16,27 @@ def guardar_cuentas(cuentas):
 
 def registrar_cliente(cuentas):
     print("\n=== Registrar Nuevo Cliente ===")
-    nombre = input("Ingrese nombre del cliente: ").strip()
+    
+    # Validar que el nombre no esté vacío
+    while True:
+        nombre = input("Ingrese nombre del cliente: ").strip()
+        if nombre:
+            break
+        print(" El nombre no puede estar vacío.")
+    
+    # Número de cuenta automático 
     ultimo = len(cuentas) + 1
     numero_cuenta = str(ultimo).zfill(6)
+    
+    # PIN con confirmación
     while True:
         pin = input("Ingrese PIN (4 dígitos): ").strip()
-        if len(pin) == 4 and pin.isdigit():
+        pin_conf = input("Confirme el PIN: ").strip()
+        if len(pin) == 4 and pin.isdigit() and pin == pin_conf:
             break
-        print(" El PIN debe tener exactamente 4 dígitos.")
+        print(" El PIN debe tener exactamente 4 dígitos y coincidir.")
+    
+    # Saldo inicial
     while True:
         try:
             saldo = float(input("Ingrese saldo inicial: $").replace(",", ""))
@@ -32,6 +45,7 @@ def registrar_cliente(cuentas):
             print(" El saldo no puede ser negativo.")
         except ValueError:
             print(" Ingrese un número válido.")
+    
     nuevo_cliente = {
         "nombre": nombre,
         "numero_cuenta": numero_cuenta,
@@ -43,7 +57,7 @@ def registrar_cliente(cuentas):
     print(f" Cliente registrado. Número de cuenta: {numero_cuenta}")
     return numero_cuenta
 
-# ---------- PERSONA B ----------
+# Parte 2
 def iniciar_sesion(cuentas):
     print("\n=== Iniciar Sesión ===")
     intentos = 0
